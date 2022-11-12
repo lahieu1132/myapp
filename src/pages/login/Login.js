@@ -27,8 +27,8 @@ function Login(props) {
   // local
   var [activeTabId, setActiveTabId] = useState(0);
   var [phoneValue, setPhoneValue] = useState("");
-  var [loginValue, setLoginValue] = useState("huydoppa");
-  var [passwordValue, setPasswordValue] = useState("0329142620");
+  var [loginValue, setLoginValue] = useState("huydoppa3");
+  var [passwordValue, setPasswordValue] = useState("0329142620A");
   const [emailValue, setEmailValue] = useState("")
   const [loginErrorMessage,setLoginErrorMessage] = useState("")
   const [registErrorMessage,setRegistErrorMessage] = useState("")
