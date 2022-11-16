@@ -93,7 +93,7 @@ export default function Header(props) {
         >
           <div className={classes.profileMenuUser}>
             <Typography variant="h4" weight="medium">
-              {user.username}
+              {user?.username}
             </Typography>
           </div>
           <div className={classes.profileMenuUser}>
