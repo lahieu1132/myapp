@@ -67,12 +67,12 @@ export default function TypographyPage() {
             })
   }
   const handleOk = async () => {
-    console.log(bookDetail.file)
+    console.log(bookDetail)
     var formData = new FormData();
     formData.append("title",(bookDetail.title))
     formData.append("author",(bookDetail.author))
     formData.append("description",(bookDetail.description))
-    formData.append("date", "11-02-3020")
+    formData.append("date", bookDetail.date)
     formData.append("numberofPage",(bookDetail.numberofPage))
     formData.append("category",(bookDetail.category))
   
@@ -125,8 +125,8 @@ export default function TypographyPage() {
 
 
     const handleInputChange = (key, text) =>{
-      console.log(text)
-      setBookDetail({...bookDetail, [key]: text})
+      console.log(text.target.value)
+      setBookDetail({...bookDetail, [key]: text.target.value})
     }
   const columns = [
     {
@@ -165,6 +165,7 @@ export default function TypographyPage() {
           }}>Delete</Button>
           <Button color="primary" onClick={()=>{
             if(!user) history.push("/login")
+            handleSelectBook(record.id)
           }}>View</Button>
         </Space>
         
@@ -177,7 +178,6 @@ export default function TypographyPage() {
   };
   const onFinish = async (values) => {
     console.log(values);
-    await setBookDetail({...bookDetail, ...values})
     await handleOk()
     await setBookDetail({})
   };
@@ -194,24 +194,34 @@ export default function TypographyPage() {
         }}>Tạo mới</button>
       </Space>
       <Table columns={columns} dataSource={list} />
-      <Modal title={isRegist ? "Tạo mới" : "Chi tiết"} width={1000} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} okText={""}>
-        <Form {...layout} ref={formRef} name="control-ref" onFinish={onFinish} labelAlign="left" layout="vertical">
+      <Modal title={isRegist ? "Tạo mới" : "Chi tiết"} width={1000} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} okText={isRegist ? "Tạo mới" : "Cập nhật"}>
+        <Form {...layout} ref={formRef} name="control-ref" onFinish={onFinish} labelAlign="left" layout="vertical"
+          fields={[{name: "title", value: bookDetail.title},
+          {name: "author", value: bookDetail.author},
+        ]}
+          onFieldsChange={(_, allFields) => {
+            if(_[0].name[0] === "date") {
+              setBookDetail({...bookDetail, date: _[0].value?._d.toISOString().slice(0, 10)})
+            }
+          }}
+        >
           <Space direction="horizontal">
           <Space direction="vertical">
           <Space direction="horizontal">
-            <Form.Item name="title" label="Tiêu đề" rules={[{ required: true }]}>
-              <Input />
+            <Form.Item name="title"  label="Tiêu đề"  rules={[{ required: true }]}>
+              <Input onChange={(value)=>handleInputChange("title", value)}/>
             </Form.Item>
-            <Form.Item name="author" label="Tác giả" rules={[{ required: true }]}>
-              <Input />
+            <Form.Item name="author"  label="Tác giả" rules={[{ required: true }]}>
+              <Input value={bookDetail.author} onChange={(value)=>handleInputChange("author", value)}/>
             </Form.Item>
           </Space>
-          <Form.Item name="description" label="Mô tả về sách">
-            <TextArea rows={4} />
+          <Form.Item label="Mô tả về sách">
+            <TextArea rows={4} value={bookDetail.description} onChange={(value)=>handleInputChange("description", value)}/>
           </Form.Item>
           <Space>
             <Form.Item name="date" label="Ngày Phát hành" rules={[{ required: true }]}>
               <DatePicker
+                onChange={value => setBookDetail({...bookDetail, date: value?._d.toISOString().slice(0, 10)})}
                 dateRender={current => {
                   const style = {};
                   if (current.date() === 1) {
@@ -226,17 +236,14 @@ export default function TypographyPage() {
                 }}
               />
             </Form.Item>
-            <Form.Item name="numberofPage" label="Số Trang">
-              <Input />
+            <Form.Item label="Số Trang">
+              <Input value={bookDetail.numberofPage} onChange={(value)=>handleInputChange("numberofPage", value)}/>
             </Form.Item>
           </Space>
           <Form.Item
-            name={'category'}
-            noStyle
-            rules={[{ message: 'Province is required' }]}
             label="Thể loại"
           >
-            <Select placeholder="Thể loại">
+            <Select placeholder="Thể loại" value={bookDetail.category} onChange={(value)=>setBookDetail({...bookDetail, category: value})}>
               <Option value="Sách thiếu nhi">Sách thiếu nhi</Option>
               <Option value="Sách Người Lớn">Sách Người Lớn</Option>
             </Select>
@@ -247,9 +254,7 @@ export default function TypographyPage() {
             {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '200px', height: "200px" }} /> : <div style={{ width: '200px', height: "200px" }}></div>}
           </Space>
           </Space>
-          <Form.Item >
-            <Button type="primary" htmlType="submit">{isRegist ? "Tạo mới" : "Cập nhật"}</Button>
-          </Form.Item>
+
         </Form>
 
       </Modal>
