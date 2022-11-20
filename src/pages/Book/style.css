@@ -1,0 +1,7 @@
+.button-area {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    position: fixed;
+    bottom: 50px;
+}

@@ -6,16 +6,6 @@ import {
   withRouter,
 } from "react-router-dom";
 import classnames from "classnames";
-import {Box, IconButton, Link} from '@material-ui/core'
-import Icon from '@mdi/react'
-
-//icons
-import {
-  mdiFacebook as FacebookIcon,
-  mdiTwitter as TwitterIcon,
-  mdiGithub as GithubIcon,
-} from '@mdi/js'
-
 // styles
 import useStyles from "./styles";
 
@@ -25,7 +15,7 @@ import Sidebar from "../Sidebar";
 
 // pages
 import Dashboard from "../../pages/dashboard";
-import Typography from "../../pages/typography";
+import BookPage from "../../pages/Book/Book";
 
 
 // context
@@ -50,7 +40,7 @@ function Layout(props) {
             <div className={classes.fakeToolbar} />
             <Switch>
               <Route path="/app/dashboard" component={Dashboard} />
-              <Route path="/app/typography" component={Typography} />
+              <Route path="/app/book" component={BookPage} />
               <Route
                 exact
                 path="/app/ui"

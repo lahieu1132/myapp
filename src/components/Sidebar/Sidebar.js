@@ -25,12 +25,12 @@ import {
 
 const structure = [
   { id: 0, label: "Dashboard", link: "/app/dashboard", icon: <HomeIcon /> },
-  {
-    id: 1,
-    label: "Book manage",
-    link: "/app/typography",
-    icon: <TableIcon />,
-  }
+  // {
+  //   id: 1,
+  //   label: "Book manage",
+  //   link: "/app/book",
+  //   icon: <TableIcon />,
+  // }
 ];
 
 function Sidebar({ location }) {
