@@ -135,8 +135,8 @@ export default function ProductEditScreen() {
         setBookDetail({...bookDetail, file: e.target.files[0]})
     }
     const [isUpdateMode, setUpdateMode] = useState(false);
-    const handleOk = async () => {
-      console.log(bookDetail)
+    const handleOk = async (e) => {
+      e.preventDefault();
       var formData = new FormData();
       formData.append("title",(bookDetail.title))
       formData.append("author",(bookDetail.author))
@@ -160,6 +160,7 @@ export default function ProductEditScreen() {
         })
           .then(res => {
                 console.log(res.data)
+                
               })
       }
       else {
@@ -179,12 +180,12 @@ export default function ProductEditScreen() {
       if(location.state?.isRegist) {
           return <div className="button-area">
               <Button style={{marginRight:"20px"}} width="55px" color="white" onClick={()=> navigate(-1)}>Hủy</Button>
-              <Button width="55px" onClick={handleOk}>Thêm mới</Button>
+              <Button width="55px" type='submit' onClick={(e)=>handleOk(e)}>Thêm mới</Button>
           </div>
       } else if(isUpdateMode) {
           return <div className="button-area">
               <Button style={{marginRight:"20px"}} width="55px" color="white" onClick={() => setUpdateMode(false)}>Hủy</Button>
-              <Button width="55px" onClick={handleOk}>Cập nhật</Button>
+              <Button width="55px" type='submit' onClick={(e)=>handleOk(e)}>Cập nhật</Button>
           </div>
       } else {
           return <div className="button-area">
@@ -225,7 +226,6 @@ export default function ProductEditScreen() {
             <Form.Control
               value={bookDetail?.description}
               onChange={(value)=>handleInputChange("description", value)}
-              required
               disabled={!isUpdateMode && !location.state.isRegist}
             />
           </Form.Group>
@@ -233,7 +233,7 @@ export default function ProductEditScreen() {
             className="mb-3"
           >
             <Form.Group as={Col}  controlId="date">
-              <Form.Label>date</Form.Label>
+              <Form.Label>Ngày phát hành</Form.Label>
                 <DatePicker
                   selected={typeof bookDetail?.date?.getMonth === 'function' ? bookDetail?.date : Date.parse(bookDetail.date)}
                   onChange={(e) => {
@@ -241,7 +241,7 @@ export default function ProductEditScreen() {
                       setBookDetail({...bookDetail, date: e})
                     }}
                   className="form-control"
-                disabled={!isUpdateMode && !location.state.isRegist}
+                  disabled={!isUpdateMode && !location.state.isRegist}
                   customInput={
                     <input
                       type="text"
@@ -249,15 +249,15 @@ export default function ProductEditScreen() {
                       placeholder="First name"
                     />
                   }
+                  required
                 />
             </Form.Group>
             <Form.Group as={Col}  controlId="category">
-              <Form.Label>numberofPage</Form.Label>
+              <Form.Label>Số trang</Form.Label>
               <Form.Control
                 type='number'
                 value={bookDetail?.numberofPage}
                 onChange={(value)=>handleInputChange("numberofPage", value)}
-                required
                 disabled={!isUpdateMode && !location.state.isRegist}
               />
             </Form.Group>
@@ -296,7 +296,7 @@ export default function ProductEditScreen() {
               <Form.Control
                 type='file'
                 onChange={onSelectFile}
-                required
+                required = {location.state.isRegist}
               />
             }
           </Form.Group>
